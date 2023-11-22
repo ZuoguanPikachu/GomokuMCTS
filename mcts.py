@@ -19,8 +19,7 @@ def get_win_rate(node):
 
 class Agent:
     def __init__(self, chess_board, max_searches):
-        self.chess_board = chess_board
-        self.root = Node(chess_board=self.chess_board, color=self.chess_board.now_playing)
+        self.root = Node(chess_board=chess_board, color=-chess_board.now_playing)
         self.current_node = self.root
         self.max_searches = max_searches
 
@@ -34,23 +33,22 @@ class Agent:
                     self.root = child
                     self.root.parent = None
 
-                    child_visits = self.root.visits
-                    print(f"pre_visits: {child_visits}; avg_visits: {parent_visits/children_count}")
-                    break
-        else:
-            self.chess_board.play_stone(move)
-            self.current_node.color *= -1
+                    return self.root.visits, (parent_visits/children_count)
+
+        chess_board = copy.deepcopy(self.root.chess_board)
+        chess_board.play_stone(move)
+        self.root = Node(chess_board=chess_board, color=-chess_board.now_playing)
+        return 0, 0
 
     def expand(self):
         vacancies = self.current_node.chess_board.adjacent_vacancies()
-        color = self.current_node.chess_board.now_playing
         for move in vacancies:
             chess_board = copy.deepcopy(self.current_node.chess_board)
             chess_board.play_stone(move)
             child = Node(
                 parent=self.current_node,
                 chess_board=chess_board,
-                color=color
+                color=-chess_board.now_playing
             )
             self.current_node.children.append(child)
 
@@ -89,7 +87,6 @@ class Agent:
                         zero_visits.append(child)
                 if zero_visits != []:
                     self.current_node = random.choice(zero_visits)
-
 
                 # 选择ucb最大的子节点
                 else:
