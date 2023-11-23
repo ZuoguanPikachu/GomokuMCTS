@@ -28,6 +28,9 @@ while not chess_board.is_ended():
     chess_board.play_stone(move)
     chess_board.display_board()
 
+    if chess_board.is_ended():
+        break
+
     t0 = time.time()
     pre_visits, avg_visits = agent.update_root(move)
     print()
@@ -44,6 +47,7 @@ while not chess_board.is_ended():
     t1 = time.time()
     dt = t1 - t0
     print("\n"+"-"*40)
-    print(f"  Time Cost: {dt:.6f}s")
+    print(f"AI play a stone at {agent_loc}")
     print(f"AI Win Rate: {agent_win_rate*100:.6f}%")
+    print(f"  Time Cost: {dt:.6f}s")
     print("-"*40+"\n")
