@@ -2,10 +2,10 @@ import warnings
 
 
 class ChessBoard:
-    def __init__(self, size=15, win_len=5):
-        self.size = size
-        self.win_len = win_len
-        self.board = [[0 for _ in range(size)] for _ in range(size)]
+    def __init__(self):
+        self.size = 15
+        self.win_len = 5
+        self.board = [[0 for _ in range(self.size)] for _ in range(self.size)]
         self.moves = []
         self.now_playing = 1
         self.winner = 0
@@ -63,7 +63,47 @@ class ChessBoard:
             vacancies -= occupied
         return vacancies
 
-    def is_ended(self) -> bool:
+    def key_locs_by_vacancies(self, log=False):
+        directions = [(0, 1), (1, 0), (1, 1), (1, -1)]
+
+        vacancies = self.adjacent_vacancies()
+        locs = set()
+        for player in [-1, 1]:
+            for vacancy in vacancies:
+                row, col = vacancy
+                for dr, dc in directions:
+                    count = 0
+                    start = 0
+                    for i in range(-4, 5):
+                        r, c = row + i * dr, col + i * dc
+                        if (0 <= r < self.size) and (0 <= c < self.size):
+                            if self.board[r][c] == player:
+                                if count == 0:
+                                    start = i - 1
+                                count += 1
+                            elif i != 0:
+                                count = 0
+
+                            if count == 3:
+                                end = i + 1
+                                # if (start >= -4) and (end <= 4):
+                                start_r, start_c = row + start * dr, col + start * dc
+                                end_r, end_c = row + end * dr, col + end * dc
+                                if (0 <= start_r < self.size) and (0 <= start_c < self.size) and (0 <= end_r < self.size) and (0 <= end_c < self.size):
+                                    if (self.board[start_r][start_c] == 0) and (self.board[end_r][end_c] == 0):
+                                        locs.add(vacancy)
+
+                            if count == 4:
+                                locs.add(vacancy)
+
+        if len(locs) == 0:
+            return vacancies
+        else:
+            if log:
+                print(f"Key Loc: {', '.join([str(loc) for loc in locs])}\n")
+            return locs
+
+    def is_ended(self):
         if not self.moves:
             return False
         loc_i, loc_j = self.moves[-1]

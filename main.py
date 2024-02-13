@@ -13,7 +13,7 @@ if sente == 0:
     chess_board.play_stone((8, 8))
     chess_board.display_board()
 
-agent = Agent(chess_board=copy.deepcopy(chess_board), max_searches=10000)
+agent = Agent(chess_board=copy.deepcopy(chess_board), max_searches=2500)
 
 while not chess_board.is_ended():
     i = int(input('Abscissa: '))
