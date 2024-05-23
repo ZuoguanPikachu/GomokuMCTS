@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gomoku", "Gomoku\Gomoku.csproj", "{0263013B-738B-4A61-A532-81B9EA84C2DA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0263013B-738B-4A61-A532-81B9EA84C2DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0263013B-738B-4A61-A532-81B9EA84C2DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0263013B-738B-4A61-A532-81B9EA84C2DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0263013B-738B-4A61-A532-81B9EA84C2DA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {44264BE9-3559-4D3A-8F7E-0E8DE0294312}
+	EndGlobalSection
+EndGlobal
