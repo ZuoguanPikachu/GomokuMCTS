@@ -10,7 +10,7 @@
 
 原UCB公式为：
 
-![UCB](http://latex.codecogs.com/gif.latex?UCB=\frac{v}{n}+\sqrt{\frac{\ln N}{n}})
+![UCB](http://latex.codecogs.com/gif.latex?UCB=\frac{v}{n}+\sqrt{\frac{\ln%20N}{n}})
 
 其中![UCB](http://latex.codecogs.com/gif.latex?v)为该节点的价值，![UCB](http://latex.codecogs.com/gif.latex?n)为该节点的访问次数，![UCB](http://latex.codecogs.com/gif.latex?N)为该节点的父节点的访问次数。
 
@@ -30,7 +30,7 @@
 
 ## Rollout
 
-为了尽可能地rollout的准确率，不进行随机落子，而是对空位的价值进行`softmax`运算，根据概率进行落子。
+为了尽可能地`rollout`的准确率，不进行随机落子，而是对空位的价值进行`softmax`运算，根据概率进行落子。
 
-为加快速度，每次rollout，双方共下至多20手棋，未分出胜负视为平局。
+为加快速度，每次`rollout`，双方共下至多20手棋，未分出胜负视为平局。
 
