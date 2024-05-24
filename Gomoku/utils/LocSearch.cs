@@ -7,7 +7,7 @@ namespace Gomoku.utils
     class LocInfo
     {
         public (int, int) loc;
-        public List<(double, string)> values = new();
+        public List<(double, string)> values = [];
         public double selfValue;
         public double opponentValue;
 
@@ -63,7 +63,7 @@ namespace Gomoku.utils
         public static IEnumerable<LocInfo> KeyLocsInfo(Board board, int bias)
         {
             var vacancies = Vacancies(board, bias);
-            int[][] directions = { new int[] { 0, 1 }, new int[] { 1, 0 }, new int[] { 1, 1 }, new int[] { 1, -1 } };
+            int[][] directions = [[0, 1], [1, 0], [1, 1], [1, -1]];
             var locs = new List<LocInfo>();
 
             foreach ((int row, int col) in vacancies)

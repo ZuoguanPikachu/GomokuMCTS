@@ -8,7 +8,7 @@ namespace Gomoku.utils
         private const int winLength = 5;
         public readonly int size = 15;
         public int[,] board = new int[15, 15];
-        public List<(int, int)> moves = new();
+        public List<(int, int)> moves = [];
         public int nowPlaying = 1;
         public int winner = 0;
 
@@ -43,8 +43,8 @@ namespace Gomoku.utils
             var locI = moves[^1].Item1;
             var locJ = moves[^1].Item2;
             var color = -nowPlaying;
-            int[] sgnI = { 1, 0, 1, 1 };
-            int[] sgnJ = { 0, 1, 1, -1 };
+            int[] sgnI = [1, 0, 1, 1];
+            int[] sgnJ = [0, 1, 1, -1];
             for (int iter = 0; iter < 4; iter++)
             {
                 var length = 0;
