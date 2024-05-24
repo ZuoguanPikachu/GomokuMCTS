@@ -5,51 +5,18 @@ using System.Linq;
 
 namespace Gomoku.utils
 {
-    internal class NodeSnapshot
+    internal class Node(Node? parent, Board chessBoard, int color, (int, int) move)
     {
-        public List<List<int>>? PreMoves { get; set; }
-        public int Color {  get; set; }
-        public List<int>? Move { get; set; }
-        public int Visits { get; set; }
-        public int Value { get; set; }
-        public int Depth { get; set; }
-        public bool BiggerExpanded { get; set; }
-        public List<NodeSnapshot>? Children {  get; set; }
-
-        public Node ConvertToNode(Node? parent)
-        {
-            var node = new Node(parent, new Board(PreMoves!.Select(move => (move[0], move[1])).ToList()), Color, (Move![0], Move![1]))
-            {
-                visits = Visits,
-                value = Value,
-                depth = Depth,
-                biggerExpanded = BiggerExpanded,
-            };
-            node.children = Children!.Select(child => child.ConvertToNode(node)).ToList();
-
-            return node;
-        }
-    }
-    internal class Node
-    {
-        public Node? parent;
-        public Board chessBoard;
-        public int color;
-        public (int, int) move;
+        public Node? parent = parent;
+        public Board chessBoard = chessBoard;
+        public int color = color;
+        public (int, int) move = move;
 
         public int visits = 0;
         public int value = 0;
         public int depth = 1;
         public bool biggerExpanded = false;
-        public List<Node> children = new();
-
-        public Node(Node? parent, Board chessBoard, int color, (int, int) move)
-        {
-            this.parent = parent;
-            this.chessBoard = chessBoard;
-            this.color = color;
-            this.move = move;
-        }
+        public List<Node> children = [];
 
         public void Expand()
         {
@@ -91,21 +58,6 @@ namespace Gomoku.utils
         public override int GetHashCode()
         {
             return move.GetHashCode();
-        }
-
-        public NodeSnapshot ConvertToNodeSnapshot()
-        {
-            return new NodeSnapshot()
-            {
-                PreMoves = chessBoard.moves.Select(move => new List<int>() { move.Item1, move.Item2 }).ToList(),
-                Color = color,
-                Move = new() { move.Item1, move.Item2 },
-                Visits = visits,
-                Value = value,
-                Depth = depth,
-                BiggerExpanded = biggerExpanded,
-                Children = children.Select(child => child.ConvertToNodeSnapshot()).ToList()
-            };
         }
     }
 
