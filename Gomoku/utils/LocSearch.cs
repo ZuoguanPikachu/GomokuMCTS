@@ -137,13 +137,8 @@ namespace Gomoku.utils
         public static List<(int, int)> KeyLocs(Board board, int bias)
         {
             var locsInfo = KeyLocsInfo(board, bias);
-            var locs = new List<(int, int)>();
-            foreach (var item in locsInfo)
-            {
-                locs.Add(item.loc);
-            }
 
-            return locs;
+            return locsInfo.Select(item => item.loc).ToList();
         }
 
         public static (List<(int, int)>, List<double>) KeyLocsProbs(Board board)
@@ -172,49 +167,62 @@ namespace Gomoku.utils
 
         public static (double, string) FragmentEvaluate(List<int> fragment, int currentStone)
         {
-            var maxValue = -1.0;
-            var maxValueSource = "";
+            var maxValue = double.MinValue;
+            var maxValueSource = string.Empty;
 
-            var n = fragment.Count - 5;
-            for (int i = 0; i <= n; i++)
+            var window = new Queue<int>();
+            int selfCount = 0;
+            int opponentCount = 0;
+
+            for (int i = 0; i < fragment.Count; i++)
             {
-                int selfCount = 0;
-                int opponentCount = 0;
-                var window = fragment.GetRange(i, 5);
-                foreach (var stone in window)
+                var stone = fragment[i];
+                window.Enqueue(stone);
+
+                if (stone == currentStone)
                 {
+                    selfCount++;
+                }
+                else if (stone == -currentStone)
+                {
+                    opponentCount++;
+                }
+
+                if (window.Count == 5)
+                {
+                    var v = double.MinValue;
+                    var source = string.Empty;
+                    if (opponentCount == 0)
+                    {
+                        v = selfCount;
+                        source = "self";
+                    }
+                    else if (selfCount == 0)
+                    {
+                        v = opponentCount;
+                        source = "opponent";
+                    }
+
+                    if (v > 1 && v == maxValue && source == maxValueSource)
+                    {
+                        v += 0.5;
+                    }
+
+                    if (v > maxValue)
+                    {
+                        maxValue = v;
+                        maxValueSource = source;
+                    }
+
+                    stone = window.Dequeue();
                     if (stone == currentStone)
                     {
-                        selfCount++;
+                        selfCount--;
                     }
                     else if (stone == -currentStone)
                     {
-                        opponentCount++;
+                        opponentCount--;
                     }
-                }
-
-                var v = -1.0;
-                var source = "";
-                if (opponentCount == 0)
-                {
-                    v = selfCount;
-                    source = "self";
-                }
-                else if (selfCount == 0)
-                {
-                    v = opponentCount;
-                    source = "opponent";
-                }
-
-                if (v > 1 && v == maxValue && source == maxValueSource)
-                {
-                    v += 0.5;
-                }
-
-                if (v > maxValue)
-                {
-                    maxValue = v;
-                    maxValueSource = source;
                 }
             }
 

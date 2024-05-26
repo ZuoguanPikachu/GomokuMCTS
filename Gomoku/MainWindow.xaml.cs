@@ -183,15 +183,6 @@ namespace Gomoku
 
                     agent.UpdateRoot(move);
                     agent.Search();
-
-/*                    if (stopwatch.ElapsedMilliseconds > 5 * 1000)
-                    {
-                        ManualManager.SaveManual(agent.root);
-                    }
-                    else if (agent.isLastSearchUseManual)
-                    {
-                        ManualManager.SaveManual(agent.root);
-                    }*/
                     
                     var bestChild = agent.SelectBestChild();
                     PlayStone(bestChild.move);
@@ -257,16 +248,16 @@ namespace Gomoku
             StartBtn.IsEnabled = false;
         }
 
-        private static Brush BlackStoneBrush()
+        private static RadialGradientBrush BlackStoneBrush()
         {
             return new RadialGradientBrush()
             {
-                GradientStops = new GradientStopCollection
-                {
+                GradientStops =
+                [
                     new GradientStop(Colors.White, 0.0),
                     new GradientStop(Colors.LightGray, 0.2),
                     new GradientStop(Colors.Black, 1.0)
-                },
+                ],
                 Center = new Point(0.3, 0.3),
                 GradientOrigin = new Point(0.3, 0.3),
                 RadiusX = 0.4,
@@ -274,16 +265,16 @@ namespace Gomoku
             };
         }
 
-        private static Brush WhiteStoneBrush()
+        private static RadialGradientBrush WhiteStoneBrush()
         {
             return new RadialGradientBrush()
             {
-                GradientStops = new GradientStopCollection
-                        {
+                GradientStops =
+                        [
                             new GradientStop(Colors.White, 0.0),
                             new GradientStop(Colors.WhiteSmoke, 0.2),
                             new GradientStop(Colors.LightGray, 1.0)
-                        },
+                        ],
                 Center = new Point(0.3, 0.3),
                 GradientOrigin = new Point(0.3, 0.3),
                 RadiusX = 0.4,

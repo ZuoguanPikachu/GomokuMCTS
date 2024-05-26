@@ -66,8 +66,6 @@ namespace Gomoku.utils
         public Node root;
         private Node currentNode;
 
-        public bool isLastSearchUseManual;
-
         public Agent(Board chessBoard)
         {
             root = new(null, chessBoard, -chessBoard.nowPlaying, default);
