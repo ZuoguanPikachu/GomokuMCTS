@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HandyControl.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -105,6 +106,11 @@ namespace Gomoku.utils
                 }
             }
 
+            if (locs.Count == 0)
+            {
+                return [new LocInfo() { loc=vacancies.First(), opponentValue=0, selfValue=0 }];
+            }
+
             var opponentMax = locs.Max(item => item.opponentValue);
 
             if (opponentMax >= 4)
@@ -144,11 +150,6 @@ namespace Gomoku.utils
         public static (int, int) RandomMove(Board board)
         {
             var locsInfo = KeyLocsInfo(board, 1);
-
-            if (!locsInfo.Any())
-            {
-                return (-1, -1);
-            }
 
             var expSum = 0.0;
             var weigthts = new List<double>();

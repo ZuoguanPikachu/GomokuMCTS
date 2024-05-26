@@ -172,16 +172,7 @@ namespace Gomoku.utils
             {
                 for (int i = 0; i < 20; i++)
                 {
-                    var loc = LocSearch.RandomMove(chessBoard);
-                    if (loc == (-1, -1))
-                    {
-                        return 0;
-                    }
-                    else
-                    {
-                        chessBoard.PlayStone(loc);
-                    }
-
+                    chessBoard.PlayStone(LocSearch.RandomMove(chessBoard));
                     if (chessBoard.IsEnded())
                     {
                         break;
