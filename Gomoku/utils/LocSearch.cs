@@ -42,16 +42,26 @@ namespace Gomoku.utils
             {
                 for (int i = -bias; i <= bias; i++)
                 {
-                    if (move_i - i < 0 || move_i - i >= board.size)
+                    if (move_i + i < 0)
                     {
                         continue;
                     }
+                    if(move_i + i > board.size)
+                    {
+                        break;
+                    }
+
                     for (int j = -bias; j <= bias; j++)
                     {
-                        if (move_j - j < 0 || move_j - j >= board.size)
+                        if (move_j + j < 0)
                         {
                             continue;
                         }
+                        if (move_j + j > board.size)
+                        {
+                            break;
+                        }
+
                         vacancies.Add((move_i - i, move_j - j));
                     }
                 }
