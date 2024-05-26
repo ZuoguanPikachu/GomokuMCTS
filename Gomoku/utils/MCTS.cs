@@ -165,25 +165,6 @@ namespace Gomoku.utils
             return node.value / (2.0 * (node.visits + 0.01)) + 0.5;
         }
 
-        private static (int, int) RandomChoose(List<(int, int)> locs, List<double> probs)
-        {
-            var random = new Random();
-            var r = random.NextDouble();
-            var cumulativeProb = 0.0;
-
-            for (int i = 0; i < locs.Count; i++)
-            {
-                cumulativeProb += probs[i];
-
-                if (r < cumulativeProb)
-                {
-                    return locs[i];
-                }
-            }
-
-            return locs[^1];
-        }
-
         private int Rollout()
         {
             var chessBoard = new Board(currentNode.chessBoard.moves);
@@ -191,14 +172,13 @@ namespace Gomoku.utils
             {
                 for (int i = 0; i < 20; i++)
                 {
-                    var (locs, probs) = LocSearch.KeyLocsProbs(chessBoard);
-                    if (locs.Count == 0)
+                    var loc = LocSearch.RandomMove(chessBoard);
+                    if (loc == (-1, -1))
                     {
                         return 0;
                     }
                     else
                     {
-                        var loc = RandomChoose(locs, probs);
                         chessBoard.PlayStone(loc);
                     }
 

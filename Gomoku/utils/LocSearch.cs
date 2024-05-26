@@ -141,28 +141,38 @@ namespace Gomoku.utils
             return locsInfo.Select(item => item.loc).ToList();
         }
 
-        public static (List<(int, int)>, List<double>) KeyLocsProbs(Board board)
+        public static (int, int) RandomMove(Board board)
         {
             var locsInfo = KeyLocsInfo(board, 1);
 
+            if (!locsInfo.Any())
+            {
+                return (-1, -1);
+            }
+
             var expSum = 0.0;
             var weigthts = new List<double>();
-            var locs = new List<(int, int)>();
             foreach (var item in locsInfo)
             {
-                locs.Add(item.loc);
-
-                weigthts.Add(item.selfValue + item.opponentValue);
-                expSum += Math.Exp(item.selfValue + item.opponentValue);
+                var v = item.selfValue + item.opponentValue;
+                weigthts.Add(v);
+                expSum += Math.Exp(v);
             }
 
-            var probs = new List<double>();
-            foreach (var w in weigthts)
+            var random = new Random();
+            var r = random.NextDouble();
+            var cumulativeProb = 0.0;
+            for (int i = 0; i < weigthts.Count; i++)
             {
-                probs.Add(Math.Exp(w) / expSum);
+                cumulativeProb += weigthts[i] / expSum;
+
+                if (r < cumulativeProb)
+                {
+                    return locsInfo.ElementAt(i).loc;
+                }
             }
 
-            return (locs, probs);
+            return locsInfo.Last().loc;
         }
 
         public static (double, string) FragmentEvaluate(List<int> fragment, int currentStone)
