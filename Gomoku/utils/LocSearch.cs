@@ -1,5 +1,4 @@
-﻿using HandyControl.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -46,7 +45,7 @@ namespace Gomoku.utils
                     {
                         continue;
                     }
-                    if(move_i + i > board.size)
+                    if(move_i + i >= board.size)
                     {
                         break;
                     }
@@ -57,12 +56,12 @@ namespace Gomoku.utils
                         {
                             continue;
                         }
-                        if (move_j + j > board.size)
+                        if (move_j + j >= board.size)
                         {
                             break;
                         }
 
-                        vacancies.Add((move_i - i, move_j - j));
+                        vacancies.Add((move_i + i, move_j + j));
                     }
                 }
             }
@@ -74,6 +73,11 @@ namespace Gomoku.utils
         public static IEnumerable<LocInfo> KeyLocsInfo(Board board, int bias)
         {
             var vacancies = Vacancies(board, bias);
+            return KeyLocsInfo(board, vacancies);
+        }
+
+        public static IEnumerable<LocInfo> KeyLocsInfo(Board board, HashSet<(int, int)> vacancies)
+        {
             int[][] directions = [[0, 1], [1, 0], [1, 1], [1, -1]];
             var locs = new List<LocInfo>();
 
@@ -118,7 +122,7 @@ namespace Gomoku.utils
 
             if (locs.Count == 0)
             {
-                return [new LocInfo() { loc=vacancies.First(), opponentValue=0, selfValue=0 }];
+                return [new LocInfo() { loc = vacancies.First(), opponentValue = 0, selfValue = 0 }];
             }
 
             var opponentMax = locs.Max(item => item.opponentValue);
@@ -136,7 +140,7 @@ namespace Gomoku.utils
                 return locs.Where(item => item.selfValue >= 2.5 || item.opponentValue >= 2.75);
             }
 
-            else if(locs.Any(item => item.selfValue >= 3.25))
+            else if (locs.Any(item => item.selfValue >= 3.25))
             {
                 return locs.Where(item => item.selfValue >= 3.25);
             }
@@ -157,9 +161,9 @@ namespace Gomoku.utils
             return locsInfo.Select(item => item.loc).ToList();
         }
 
-        public static (int, int) RandomMove(Board board)
+        public static (int, int) RandomMove(Board board, HashSet<(int, int)> vacancies)
         {
-            var locsInfo = KeyLocsInfo(board, 1);
+            var locsInfo = KeyLocsInfo(board, vacancies);
 
             var expSum = 0.0;
             var weigthts = new List<double>();

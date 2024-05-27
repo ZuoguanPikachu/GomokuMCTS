@@ -168,15 +168,48 @@ namespace Gomoku.utils
         private int Rollout()
         {
             var chessBoard = new Board(currentNode.chessBoard.moves);
+            var vacancies = LocSearch.Vacancies(chessBoard, 1);
             if (!chessBoard.IsEnded())
             {
                 for (int i = 0; i < 20; i++)
                 {
-                    chessBoard.PlayStone(LocSearch.RandomMove(chessBoard));
+                    var loc = LocSearch.RandomMove(chessBoard, vacancies);
+                    chessBoard.PlayStone(loc);
                     if (chessBoard.IsEnded())
                     {
                         break;
                     }
+
+                    var (loc_i, loc_j) = loc;
+                    for (int i_ = -1; i_ <= 1; i_++)
+                    {
+                        if (loc_i + i_ < 0)
+                        {
+                            continue;
+                        }
+                        if (loc_i + i_ >= chessBoard.size)
+                        {
+                            break;
+                        }
+
+                        for (int j_ = -1; j_ <= 1; j_++)
+                        {
+                            if (loc_j + j_ < 0)
+                            {
+                                continue;
+                            }
+                            if (loc_j + j_ >= chessBoard.size)
+                            {
+                                break;
+                            }
+
+                            if (chessBoard.IsLegal((loc_i + i_, loc_j + j_)))
+                            {
+                                vacancies.Add((loc_i + i_, loc_j + j_));
+                            }
+                        }
+                    }
+                    vacancies.Remove(loc);
                 }
             }
 
